@@ -1,0 +1,10 @@
+CREATE DATABASE forum_site;
+
+USE forum_site;
+
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    imagem TEXT,
+    texto TEXT NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

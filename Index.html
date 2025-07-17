@@ -1,0 +1,43 @@
+<div id="blog" class="tab-content">
+  <h2>Publique algo no nosso fórum:</h2>
+  <form id="postForm">
+    <input type="url" id="imageURL" placeholder="URL da imagem (opcional)">
+    <textarea id="textContent" placeholder="Escreva sua mensagem aqui..." required></textarea>
+    <button type="submit">Postar</button>
+  </form>
+
+  <div id="postsContainer"></div>
+
+  <script>
+    function carregarPosts() {
+      fetch("carregar_posts.php")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("postsContainer").innerHTML = html;
+        });
+    }
+
+    document.getElementById("postForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("imagem", document.getElementById("imageURL").value);
+      formData.append("texto", document.getElementById("textContent").value);
+
+      fetch("salvar_post.php", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(resp => {
+        if (resp.trim() === "OK") {
+          document.getElementById("postForm").reset();
+          carregarPosts();
+        } else {
+          alert("Erro ao salvar: " + resp);
+        }
+      });
+    });
+
+    window.addEventListener("load", carregarPosts);
+  </script>
+</div>
